@@ -9,6 +9,32 @@ from scipy.linalg import expm3, norm
 
 import mdtraj as md
 
+HELP = """
+DESCRIPTION
+
+Rotates molecule around axis.
+
+OPTIONS
+
+        -f [.pdb]  input file
+        -o [.pdb]  output file
+
+   --angle []      angle of rotation in degrees (float number)
+    --axis []      axis of rotation (comma separated list of numbers)
+
+        -v         verbose flag (--verbose)
+        -h         print this help (--help)
+
+EXAMPLE USAGE
+
+Rotate the molecule 90 degrees around the z axis.
+
+python3 rotate.py -f peptide.pdb -o out.pdb --angle=90 --axis=0,0,1
+"""
+
+def usage():
+    print(HELP)
+
 def parse_cmd_options():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hf:o:v:", ["help", "verbose", "angle=", "axis="])
@@ -35,13 +61,13 @@ def parse_cmd_options():
         elif o in ("-o"):
             foutput = a
         elif o in ("--angle"):
-            angle = [float(a)]
+            angle = [float(a),]
         elif o in ("--axis"):
-            axis = [np.asarray([float(x) for x in a.split(",")])]
+            axis = [np.asarray([float(x) for x in a.split(",")]),]
         else:
             assert False, "unhandled option"
 
-        theta = angle * np.pi / 180
+    theta = [ang * np.pi / 180 for ang in angle]
 
     return {
         'theta': theta,

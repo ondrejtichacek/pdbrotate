@@ -11,6 +11,27 @@ import mdtraj as md
 
 from rotate import rotate
 
+HELP = """
+DESCRIPTION
+
+Aligns the molecule according to its principial axis.
+
+OPTIONS
+
+        -f [.pdb]  input file
+        -o [.pdb]  output file
+
+        -v         verbose flag (--verbose)
+        -h         print this help (--help)
+
+EXAMPLE USAGE
+
+python3 align.py -f peptide.pdb -o out.pdb
+"""
+
+def usage():
+    print(HELP)
+
 def parse_cmd_options():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hf:o:v:", ["help", "verbose"])
